@@ -1,0 +1,63 @@
+<!-- Import Polymer -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+
+<!-- Define your custom element -->
+<polymer-element name="scrolly-reader" attributes="source">
+
+    <template>
+        <style>
+        section {
+            width: 100%;
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+        }
+
+        section a {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            white-space: normal;
+            vertical-align: top;
+            text-overflow: ellipsis;
+        }
+        </style>
+
+        <core-ajax auto
+            url="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22{{source}}%22&format=json&callback="
+            handleAs="json"
+            response="{{response}}"></core-ajax>
+
+        <h2>{{source}}</h2>
+
+        <section>
+            <template repeat="{{item in response.query.results.item}}">
+                <a href="{{item.link}}">{{item.title}}</a>
+            </template>
+        </section>
+    </template>
+
+    <script>
+        Polymer('scrolly-reader', {
+            // Fires when an instance of the element is created
+            created: function() {},
+
+            // Fires when the "<polymer-element>" has been fully prepared
+            ready: function() {},
+
+            // Fires when the element was inserted into the document
+            attached: function() {},
+
+            // Fires when the element’s initial set of children and siblings are guaranteed to exist
+            domReady: function() {},
+
+            // Fires when the element was removed from the document
+            detached: function() {},
+
+            // Fires when an attribute was added, removed, or updated
+            attributeChanged: function(attr, oldVal, newVal) {}
+        });
+    </script>
+
+</polymer-element>
