@@ -1,0 +1,25 @@
+<!-- Import Polymer -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<!-- Define your custom element -->
+<polymer-element name="horizontal-scroller">
+
+    <template>
+        <style>
+        :host {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+        }
+        </style>
+
+        <content></content>
+    </template>
+
+    <script>
+        Polymer('horizontal-scroller');
+    </script>
+
+</polymer-element>

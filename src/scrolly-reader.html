@@ -1,41 +1,53 @@
 <!-- Import Polymer -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../bower_components/core-selector/core-selector.html">
+<link rel="import" href="horizontal-scroller.html">
+<link rel="import" href="story-overlay.html">
 
 <!-- Define your custom element -->
-<polymer-element name="scrolly-reader" attributes="source">
+<polymer-element name="scrolly-reader" attributes="source title">
 
     <template>
         <style>
-        section {
-            width: 100%;
-            overflow: scroll;
-            -webkit-overflow-scrolling: touch;
-            white-space: nowrap;
+        horizontal-scroller {
+            height: 120px;
         }
 
-        section a {
+        .story-block {
             display: inline-block;
             width: 120px;
             height: 120px;
-            white-space: normal;
             vertical-align: top;
             text-overflow: ellipsis;
+            white-space: normal;    
+        }
+
+        .story-block.core-selected {
+            background: #eee;
+        }
+
+        story-overlay img {
+            max-width: 100%;
         }
         </style>
 
-        <core-ajax auto
+        <core-ajax id="ajax" auto
             url="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22{{source}}%22&format=json&callback="
             handleAs="json"
             response="{{response}}"></core-ajax>
 
-        <h2>{{source}}</h2>
+        <h2>{{title}}</h2>
 
-        <section>
-            <template repeat="{{item in response.query.results.item}}">
-                <a href="{{item.link}}">{{item.title}}</a>
-            </template>
-        </section>
+        <horizontal-scroller>
+            <core-selector id="selector">
+                <template repeat="{{response.query.results.item}}">
+                    <div class="story-block">{{title}}</a>
+                </template>
+            </core-selector>
+        </horizontal-scroller>
+
+        <story-overlay id="overlay"></story-overlay>
     </template>
 
     <script>
@@ -44,7 +56,20 @@
             created: function() {},
 
             // Fires when the "<polymer-element>" has been fully prepared
-            ready: function() {},
+            ready: function() {
+                this.$.selector.addEventListener('core-select', function(evt) {
+                    if (evt.detail.isSelected) {
+                        this.openOverlayWithModel(evt.detail.item.templateInstance.model);
+                    }
+                }.bind(this));
+
+                this.$.overlay.addEventListener('story-overlay-open', function(evt) {
+                    var opened = evt.detail.detail === true;
+                    if (!opened) {
+                        this.$.selector.selected = -1;
+                    };
+                }.bind(this)) ;
+            },
 
             // Fires when the element was inserted into the document
             attached: function() {},
@@ -56,7 +81,15 @@
             detached: function() {},
 
             // Fires when an attribute was added, removed, or updated
-            attributeChanged: function(attr, oldVal, newVal) {}
+            attributeChanged: function(attr, oldVal, newVal) {},
+
+            openOverlayWithModel: function(model) {
+                var overlay = this.$.overlay;
+                overlay.title = model.title;
+                overlay.link = model.link;
+                overlay.innerHTML = model.description;
+                overlay.open();
+            }
         });
     </script>
 
