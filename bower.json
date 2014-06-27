@@ -19,6 +19,7 @@
     "core-header-panel": "Polymer/core-header-panel",
     "core-overlay": "Polymer/core-overlay",
     "core-selector": "Polymer/core-selector",
-    "core-toolbar": "Polymer/core-toolbar"
+    "core-toolbar": "Polymer/core-toolbar",
+    "font-roboto": "Polymer/font-roboto"
   }
 }
