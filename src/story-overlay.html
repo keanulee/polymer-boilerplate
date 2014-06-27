@@ -1,0 +1,62 @@
+<!-- Import Polymer -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">>
+
+<!-- Define your custom element -->
+<polymer-element name="story-overlay" attributes="title link">
+
+    <template>
+        <style>
+        core-overlay {
+            background-color: #FFF;
+            width: 800px;
+            height: 100%;
+        }
+
+        core-header-panel {
+            height: 100%;
+        }
+
+        .content {
+            padding: 16px;
+        }
+        </style>
+
+        <core-overlay id="overlay" backdrop>
+            <core-header-panel mode="waterfall">
+                <core-toolbar>
+                    <a href="{{link}}" target="_blank">{{title}}</a>
+                    <div flex></div>
+                    <core-icon-button icon="close" on-tap="{{close}}"></core-icon-button>
+                </core-toolbar>
+
+                <div class="content">
+                    <content></content>
+                </div>
+            </core-header-panel>
+        </core-overlay>
+    </template>
+
+    <script>
+        Polymer('story-overlay', {
+            // Fires when the "<polymer-element>" has been fully prepared
+            ready: function() {
+                this.$.overlay.addEventListener('core-overlay-open', function(evt) {
+                    this.fire('story-overlay-open', evt)
+                }.bind(this)) ;
+            },
+
+            open: function() {
+                this.$.overlay.open()
+            },
+
+            close: function() {
+                this.$.overlay.close()
+            }
+        });
+    </script>
+
+</polymer-element>

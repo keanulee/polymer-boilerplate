@@ -2,18 +2,21 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>&lt;my-repo&gt;</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>Scrolly Reader Demo</title>
 
     <!-- Importing Web Component's Polyfill -->
     <script src="bower_components/platform/platform.js"></script>
 
     <!-- Importing Custom Elements -->
-    <link rel="import" href="src/my-element.html">
+    <link rel="import" href="src/scrolly-reader.html">
 </head>
 <body>
 
     <!-- Using Custom Elements -->
-    <my-element></my-element>
+    <scrolly-reader title="Engadget" source="http://www.engadget.com/rss-hd.xml"></scrolly-reader>
+    <scrolly-reader title="CNET" source="http://www.cnet.com/rss/news/"></scrolly-reader>
+    <scrolly-reader title="MacRumors" source="http://feeds.macrumors.com/MacRumors-All"></scrolly-reader>
 
 </body>
 </html>
